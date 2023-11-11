@@ -1,21 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { Counter } from './components/counter/Counter';
+import { CounterDisplay } from './components/counter/counterDisplay/CounterDisplay';
+import { CounterSetter } from './components/counter/counterSetter/CounterSetter';
 
 function App() {
 
-
-
   return (
     <div className="App">
-
-      <Counter/>
-      <Counter/>
-
-
-
-
+      <div className='counters_wrapper'>
+        <CounterSetter/>
+        <CounterDisplay/>
+      </div>
     </div>
   );
 }
