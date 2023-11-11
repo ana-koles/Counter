@@ -1,0 +1,22 @@
+.wrapper, .content_wrapper, .value_content {
+  border: 2px solid #61D2F5;
+}
+
+.wrapper {
+  max-width: 245px;
+}
+
+.value {
+  font-size: 30px;
+  color: #61D2F5;
+}
+
+.red {
+  color: red;
+}
+
+p {
+  font-size: 20px;
+  color: #61D2F5;
+}
+

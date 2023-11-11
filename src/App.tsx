@@ -8,10 +8,8 @@ function App() {
 
   return (
     <div className="App">
-      <div className='counters_wrapper'>
-        <CounterSetter/>
-        <CounterDisplay/>
-      </div>
+      <CounterSetter />
+      <CounterDisplay />
     </div>
   );
 }
