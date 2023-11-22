@@ -16,7 +16,7 @@ export const CounterDisplay: React.FC<CounterDisplayPropsType> = (props) => {
         </div>
       </div>
 
-      <div className={s.content_wrapper}>
+      <div className={s.button_wrapper}>
         <Button name='inc' callback={() => { }} />
         <Button name='reset' callback={() => { }} />
       </div>

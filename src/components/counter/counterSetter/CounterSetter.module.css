@@ -1,11 +1,40 @@
-.wrapper, .content_wrapper, .value_content {
+.wrapper, .content_wrapper {
   border: 2px solid hsl(194, 88%, 67%);
-  max-width: 245px;
 }
 
 .wrapper {
-  max-width: 245px;
+  width: 245px;
+  padding: 10px;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
 }
+
+
+.content_wrapper {
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 10px;
+}
+
+.value_content {
+  display: flex;
+  font-size: 15px;
+  justify-content: space-around;
+}
+
+
+.button_wrapper {
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 
 .value {
   font-size: 30px;

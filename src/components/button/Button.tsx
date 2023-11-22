@@ -14,10 +14,7 @@ export const Button: React.FC<ButtonPropsType> = (props) => {
 
 
   return (
-    <div>
       <button onClick={onClickHandler}>{name}</button>
-
-    </div>
   );
 };
 

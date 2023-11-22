@@ -36,7 +36,7 @@ export const CounterSetter: React.FC<CounterSetterPropsType> = (props) => {
           })}
       </div>
 
-      <div className={s.content_wrapper}>
+      <div className={s.button_wrapper}>
         <Button name='set' callback={() => { }} />
       </div>
 
