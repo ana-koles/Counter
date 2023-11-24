@@ -13,7 +13,6 @@ type CounterSetterPropsType = {
 export const CounterSetter: React.FC<CounterSetterPropsType> = (props) => {
 
 
-
   return (
     <div className={s.wrapper}>
       <div className={s.content_wrapper}>

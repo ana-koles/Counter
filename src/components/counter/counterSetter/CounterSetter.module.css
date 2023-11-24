@@ -24,12 +24,13 @@
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
+  gap: 10px
 }
 
 .value_content {
   display: flex;
   font-size: 15px;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 

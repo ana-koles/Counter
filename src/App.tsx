@@ -23,18 +23,15 @@ function App() {
     {title: titlesList.min, value: 0},
   ]);
 
+  const [currentDisplayValue, setCurrentDisplayValue] = useState<string>('0')
+
   const changeValue = (title: string, newValue: number) => {
-    setValues(values.map(v => v.title === title ? {...v, value: newValue} : v))
+    setValues(values.map(v => v.title === title ? {...v, value: newValue} : v));
   }
 
   useEffect(() => {
     getFromLocalStorageHandler();
-  }, ['max value','min value' ])
-
-  const setToLocalStorageHandler = () => {
-    localStorage.setItem('max value', JSON.stringify(values[0].value));
-    localStorage.setItem('min value', JSON.stringify(values[1].value))
-  }
+  }, ['max value','min value'])
 
   const getFromLocalStorageHandler = () => {
     const newMaxValue = localStorage.getItem('max value');
@@ -46,7 +43,12 @@ function App() {
 
       setValues(values.map(v => v.title === titlesList.max ? {...v, value: newMaxValueNum} : {...v, value: newMinValueNum}))
     }
+  }
 
+  const setToLocalStorageHandler = () => {
+    localStorage.setItem('max value', JSON.stringify(values[0].value));
+    localStorage.setItem('min value', JSON.stringify(values[1].value));
+    setCurrentDisplayValue((values[1].value).toString());
   }
 
   return (
@@ -54,8 +56,10 @@ function App() {
       <CounterSetter
             values={values}
             changeValue={changeValue}
-            setToLocalStorageHandler={setToLocalStorageHandler} />
-      <CounterDisplay />
+            setToLocalStorageHandler={setToLocalStorageHandler}
+      />
+      <CounterDisplay
+            currentDisplayValue={currentDisplayValue} />
     </div>
   );
 }
