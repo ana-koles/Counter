@@ -29,6 +29,10 @@
   justify-content: center;
 }
 
+.value_content p {
+  font-size: 16px;
+}
+
 .button_wrapper {
   display: flex;
   justify-content: center;
@@ -37,7 +41,9 @@
   align-items: center
 }
 
-
+.hidden {
+  display: none;
+}
 
 .value {
   font-size: 40px;
@@ -46,6 +52,7 @@
 
 .red {
   color: red;
+  font-weight: bold;
 }
 
 p {

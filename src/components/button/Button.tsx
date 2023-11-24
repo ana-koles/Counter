@@ -3,6 +3,7 @@ import React from 'react';
 type ButtonPropsType = {
   name: string
   callback: () => void
+  disabled?: boolean
 }
 
 export const Button: React.FC<ButtonPropsType> = (props) => {
@@ -14,7 +15,7 @@ export const Button: React.FC<ButtonPropsType> = (props) => {
 
 
   return (
-      <button onClick={onClickHandler}>{name}</button>
+      <button onClick={onClickHandler} disabled={props.disabled}>{name}</button>
   );
 };
 

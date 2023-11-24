@@ -9,14 +9,14 @@ export type ValueType = {
   value: number
 }
 
+export const titlesList = {
+  max: 'max value',
+  min: 'min value',
+};
+
 export type ValuesType = ValueType[]
 
 function App() {
-
-  const titlesList = {
-    max: 'max value',
-    min: 'min value',
-  };
 
   let incStep = 1;
 
@@ -26,9 +26,28 @@ function App() {
   ]);
 
   const [currentDisplayValue, setCurrentDisplayValue] = useState<number>(0)
+  const [isDisabled, setIsDisabled] = useState(true);
+  const [isHiddent, setIsHiddent] = useState(true);
+  const [isValidValue, setIsValidValue] = useState(true);
+  const [message, setMessage] = useState('enter value and press "set"');
+  const [error, setError] = useState('');
 
-  const changeValue = (title: string, newValue: number) => {
-    setValues(values.map(v => v.title === title ? {...v, value: newValue} : v));
+
+  const changeValue = (title: string, newValue: number, valid: boolean) => {
+
+    if (!valid) {
+      setValues(values.map(v => v.title === title ? {...v, value: newValue} : v));
+      setIsValidValue(false);
+      setError('invalid value');
+      setIsDisabled(true);
+
+    } else {
+      setValues(values.map(v => v.title === title ? {...v, value: newValue} : v));
+      setIsDisabled(false);
+      setIsHiddent(true);
+      setIsValidValue(true);
+      setError('');
+    }
   }
 
   useEffect(() => {
@@ -47,10 +66,15 @@ function App() {
     }
   }
 
+  //set
+
   const setToLocalStorageHandler = () => {
     localStorage.setItem('max value', JSON.stringify(values[0].value));
     localStorage.setItem('min value', JSON.stringify(values[1].value));
     setCurrentDisplayValue(values[1].value);
+    setIsDisabled(true);
+    setIsHiddent(false);
+    setMessage('enter value and press "set"');
   }
 
   //display
@@ -70,11 +94,19 @@ function App() {
             values={values}
             changeValue={changeValue}
             setToLocalStorageHandler={setToLocalStorageHandler}
+            isDisabled={isDisabled}
+            isValidValue={isValidValue}
       />
       <CounterDisplay
             currentDisplayValue={currentDisplayValue}
             icrementValue={icrementValue}
-            resetCounter={resetCounter}/>
+            resetCounter={resetCounter}
+            incrementStatus={currentDisplayValue >= values[0].value}
+            isHiddent={isHiddent}
+            message={message}
+            error={error}
+
+            />
     </div>
   );
 }
