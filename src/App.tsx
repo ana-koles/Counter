@@ -15,15 +15,17 @@ function App() {
 
   const titlesList = {
     max: 'max value',
-    min: 'min valu'
-  }
+    min: 'min value',
+  };
+
+  let incStep = 1;
 
   const [values, setValues] = useState<ValuesType>([
     {title: titlesList.max, value: 0,},
     {title: titlesList.min, value: 0},
   ]);
 
-  const [currentDisplayValue, setCurrentDisplayValue] = useState<string>('0')
+  const [currentDisplayValue, setCurrentDisplayValue] = useState<number>(0)
 
   const changeValue = (title: string, newValue: number) => {
     setValues(values.map(v => v.title === title ? {...v, value: newValue} : v));
@@ -48,8 +50,19 @@ function App() {
   const setToLocalStorageHandler = () => {
     localStorage.setItem('max value', JSON.stringify(values[0].value));
     localStorage.setItem('min value', JSON.stringify(values[1].value));
-    setCurrentDisplayValue((values[1].value).toString());
+    setCurrentDisplayValue(values[1].value);
   }
+
+  //display
+
+  const icrementValue = () => {
+    setCurrentDisplayValue(currentDisplayValue => (currentDisplayValue + incStep));
+  }
+
+  const resetCounter = () => {
+    setCurrentDisplayValue(0);
+  }
+
 
   return (
     <div className="App">
@@ -59,7 +72,9 @@ function App() {
             setToLocalStorageHandler={setToLocalStorageHandler}
       />
       <CounterDisplay
-            currentDisplayValue={currentDisplayValue} />
+            currentDisplayValue={currentDisplayValue}
+            icrementValue={icrementValue}
+            resetCounter={resetCounter}/>
     </div>
   );
 }
