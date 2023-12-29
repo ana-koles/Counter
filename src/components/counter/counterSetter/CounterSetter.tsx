@@ -1,38 +1,55 @@
-import React, { useCallback, useState } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import { Input } from '../../input/Input';
 import { Button } from '../../button/Button';
 import s from './CounterSetter.module.css'
-import { ValuesType, titlesList } from '../../../App';
+import { ValueType, titlesList } from '../../../store/value-reducer';
 
 type CounterSetterPropsType = {
-  values: ValuesType
-  changeValue: (title: string, newValue: number, valid: boolean) => void
+  values: ValueType[]
+  changeValue: (id: string, newValue: number, valid: boolean, singleValueValid: boolean) => void
   setToLocalStorageHandler: () => void
-  isDisabled: boolean
+  /* isDisabled: boolean */
   isValidValue: boolean
 }
 
-export const CounterSetter: React.FC<CounterSetterPropsType> = (props) => {
+export const CounterSetter: React.FC<CounterSetterPropsType> = memo((props) => {
 
-  const changeValue = (title: string, newValue: number) => {
+  const [isDisabled, setIsDisabled] = useState(true);
+
+  const changeValue = (value: ValueType, newValue: number) => {
+
     let valid = true;
+    const foundValue = props.values.find((item) => item.title !== value.title);
+    let singleValueValid = true;
 
     if (newValue < 0) {
       valid = false;
-    } else {
-      const foundValue = props.values.find((item) => item.title !== title);
-      const valueToCompare = foundValue ? foundValue.value : null;
+      singleValueValid = false
+    } else if (foundValue && foundValue.value < 0) {
+        valid = false
+    }
 
-      if (valueToCompare && foundValue) {
-        if (title === titlesList.max) {
-          valid = newValue > foundValue.value ? true : false;
-        } else if (title === titlesList.min) {
-          valid = newValue < foundValue.value ? true : false;
-        }
+    if (foundValue && valid) {
+
+      if (value.title === titlesList.max) {
+        valid = newValue > foundValue.value ? true
+        : newValue === foundValue.value
+        ? true
+        : false;
+        singleValueValid = valid;
+
+      } else if (value.title === titlesList.min) {
+        valid = newValue < foundValue.value
+          ? true
+          : newValue === foundValue.value
+          ? true
+          : false;
+          singleValueValid = valid;
       }
     }
 
-    props.changeValue(title, newValue, valid);
+    setIsDisabled(!valid)
+    props.changeValue(value.id, newValue, valid, singleValueValid);
 
   }
 
@@ -41,11 +58,8 @@ export const CounterSetter: React.FC<CounterSetterPropsType> = (props) => {
       <div className={s.content_wrapper}>
 
           {props.values.map((value) => {
-
             const onChangeHandler = (newValue: number) => {
-              changeValue(value.title, newValue);
-
-              /* props.changeValue(value.title, newValue) */
+              changeValue(value, newValue);
             }
 
             return (
@@ -54,19 +68,21 @@ export const CounterSetter: React.FC<CounterSetterPropsType> = (props) => {
                 <Input
                       type="number"
                       value={value.value}
+                      isValid={value.isValid}
                       onChange={onChangeHandler}
                       min='-1'
-                      isValid={value.title === titlesList.min ? props.isValidValue : true}/>
+                />
               </div>
             )
           })}
       </div>
 
       <div className={s.button_wrapper}>
-        <Button name='set' callback={props.setToLocalStorageHandler} disabled={props.isDisabled}/>
+        {/* <Button name='set' callback={props.setToLocalStorageHandler} disabled={props.isDisabled}/> */}
+        <Button name='set' callback={props.setToLocalStorageHandler} disabled={isDisabled}/>
       </div>
 
     </div>
   );
-};
+});
 

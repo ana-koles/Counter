@@ -1,60 +1,50 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { CounterDisplay } from './components/counter/counterDisplay/CounterDisplay';
 import { CounterSetter } from './components/counter/counterSetter/CounterSetter';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppRootStateType } from './store/store';
+import { changeValidationAC, changeValueAC, ValuesType } from './store/value-reducer';
 
-export type ValueType = {
-  title: string
-  value: number
-}
-
-export const titlesList = {
-  max: 'max value',
-  min: 'min value',
-};
-
-export type ValuesType = ValueType[]
 
 function App() {
 
   let incStep = 1;
 
-  const [values, setValues] = useState<ValuesType>([
-    {title: titlesList.max, value: 0,},
-    {title: titlesList.min, value: 0},
-  ]);
+  const values = useSelector<AppRootStateType, ValuesType>(state => state.values);
+  const dispatch = useDispatch();
 
   const [currentDisplayValue, setCurrentDisplayValue] = useState<number>(0)
-  const [isDisabled, setIsDisabled] = useState(true);
+  /* const [isDisabled, setIsDisabled] = useState(true); */
   const [isHiddent, setIsHiddent] = useState(true);
   const [isValidValue, setIsValidValue] = useState(true);
   const [message, setMessage] = useState('enter value and press "set"');
   const [error, setError] = useState('');
 
 
-  const changeValue = (title: string, newValue: number, valid: boolean) => {
+  const changeValue = useCallback((valueId: string, newValue: number, valid: boolean, singleValueValid: boolean) => {
+    dispatch(changeValueAC(valueId, newValue))
+    dispatch(changeValidationAC(valueId, singleValueValid))
 
     if (!valid) {
-      setValues(values.map(v => v.title === title ? {...v, value: newValue} : v));
       setIsValidValue(false);
       setError('invalid value');
-      setIsDisabled(true);
+      //setIsDisabled(true);
 
     } else {
-      setValues(values.map(v => v.title === title ? {...v, value: newValue} : v));
-      setIsDisabled(false);
+      //setIsDisabled(false);
       setIsHiddent(true);
       setIsValidValue(true);
       setError('');
     }
-  }
+  }, [dispatch, setIsValidValue, setError, setIsHiddent])
 
-  useEffect(() => {
+  /* useEffect(() => {
     getFromLocalStorageHandler();
-  }, ['max value','min value'])
+  }, ['max value','min value']) */
 
-  const getFromLocalStorageHandler = () => {
+  /* const getFromLocalStorageHandler = () => {
     const newMaxValue = localStorage.getItem('max value');
     const newMinValue = localStorage.getItem('min value');
 
@@ -64,28 +54,28 @@ function App() {
 
       setValues(values.map(v => v.title === titlesList.max ? {...v, value: newMaxValueNum} : {...v, value: newMinValueNum}))
     }
-  }
+  } */
 
   //set
 
-  const setToLocalStorageHandler = () => {
-    localStorage.setItem('max value', JSON.stringify(values[0].value));
-    localStorage.setItem('min value', JSON.stringify(values[1].value));
+  const setToLocalStorageHandler = useCallback(() => {
+    //localStorage.setItem('max value', JSON.stringify(values[0].value));
+    //localStorage.setItem('min value', JSON.stringify(values[1].value));
     setCurrentDisplayValue(values[1].value);
-    setIsDisabled(true);
+    //setIsDisabled(true);
     setIsHiddent(false);
     setMessage('enter value and press "set"');
-  }
+  }, [setCurrentDisplayValue,setIsHiddent, setMessage, values ])
 
   //display
 
-  const icrementValue = () => {
+  const icrementValue = useCallback(() => {
     setCurrentDisplayValue(currentDisplayValue => (currentDisplayValue + incStep));
-  }
+  }, [setCurrentDisplayValue])
 
-  const resetCounter = () => {
+  const resetCounter = useCallback(() => {
     setCurrentDisplayValue(0);
-  }
+  }, [setCurrentDisplayValue]);
 
 
   return (
@@ -94,7 +84,7 @@ function App() {
             values={values}
             changeValue={changeValue}
             setToLocalStorageHandler={setToLocalStorageHandler}
-            isDisabled={isDisabled}
+            /* isDisabled={isDisabled} */
             isValidValue={isValidValue}
       />
       <CounterDisplay

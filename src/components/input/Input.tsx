@@ -21,6 +21,7 @@ export const Input: React.FC<InputPropsType> = (props) => {
 
   return (
     <div >
+      {/* <input type={type} value={value} onChange={onChangeHandler} min={min} className={`${props.isValid ? '' : s.red}`}/> */}
       <input type={type} value={value} onChange={onChangeHandler} min={min} className={`${props.isValid ? '' : s.red}`}/>
     </div>
   );

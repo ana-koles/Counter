@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import { Button } from '../../button/Button';
 import s from './CounterDisplay.module.css'
-import { ValuesType } from '../../../App';
 
 type CounterDisplayPropsType = {
   currentDisplayValue: number
@@ -13,7 +12,8 @@ type CounterDisplayPropsType = {
   error: string
 }
 
-export const CounterDisplay: React.FC<CounterDisplayPropsType> = (props) => {
+export const CounterDisplay: React.FC<CounterDisplayPropsType> = memo((props) => {
+  
 
   return (
     <div className={s.wrapper}>
@@ -45,5 +45,5 @@ export const CounterDisplay: React.FC<CounterDisplayPropsType> = (props) => {
       </div>
     </div>
   );
-};
+});
 
