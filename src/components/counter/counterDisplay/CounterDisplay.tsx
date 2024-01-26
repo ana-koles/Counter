@@ -13,8 +13,8 @@ type CounterDisplayPropsType = {
 }
 
 export const CounterDisplay: React.FC<CounterDisplayPropsType> = memo((props) => {
-  
 
+  console.log(props.currentDisplayValue);
   return (
     <div className={s.wrapper}>
       <div className={s.content_wrapper}>

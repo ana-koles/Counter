@@ -2,19 +2,20 @@ import React, { memo, useCallback, useState } from 'react';
 import { Input } from '../../input/Input';
 import { Button } from '../../button/Button';
 import s from './CounterSetter.module.css'
-import { ValueType, titlesList } from '../../../store/value-reducer';
+import { InitialStateType, ValueType, valuesList } from '../../../store/setter-reducer';
 
 type CounterSetterPropsType = {
-  values: ValueType[]
-  changeValue: (id: string, newValue: number, valid: boolean, singleValueValid: boolean) => void
-  setToLocalStorageHandler: () => void
-  /* isDisabled: boolean */
+  values: InitialStateType
+  changeValue: (id: string, newValue: number, singleValueValid: boolean) => void
+  setCurrentValue: () => void
+  //setToLocalStorageHandler: () => void
+  changeCounterValidation: (valid: boolean) => void
   isValidValue: boolean
 }
 
 export const CounterSetter: React.FC<CounterSetterPropsType> = memo((props) => {
 
-  const [isDisabled, setIsDisabled] = useState(true);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const changeValue = (value: ValueType, newValue: number) => {
 
@@ -31,14 +32,14 @@ export const CounterSetter: React.FC<CounterSetterPropsType> = memo((props) => {
 
     if (foundValue && valid) {
 
-      if (value.title === titlesList.max) {
+      if (value.title === valuesList.max) {
         valid = newValue > foundValue.value ? true
         : newValue === foundValue.value
         ? true
         : false;
         singleValueValid = valid;
 
-      } else if (value.title === titlesList.min) {
+      } else if (value.title === valuesList.min) {
         valid = newValue < foundValue.value
           ? true
           : newValue === foundValue.value
@@ -49,7 +50,9 @@ export const CounterSetter: React.FC<CounterSetterPropsType> = memo((props) => {
     }
 
     setIsDisabled(!valid)
-    props.changeValue(value.id, newValue, valid, singleValueValid);
+    props.changeValue(value.id, newValue, singleValueValid);
+    props.changeCounterValidation(valid);
+
 
   }
 
@@ -79,7 +82,7 @@ export const CounterSetter: React.FC<CounterSetterPropsType> = memo((props) => {
 
       <div className={s.button_wrapper}>
         {/* <Button name='set' callback={props.setToLocalStorageHandler} disabled={props.isDisabled}/> */}
-        <Button name='set' callback={props.setToLocalStorageHandler} disabled={isDisabled}/>
+        <Button name='set' callback={props.setCurrentValue} disabled={isDisabled}/>
       </div>
 
     </div>
